@@ -6,6 +6,7 @@
 const tintColorLight = "#0a7ea4";
 export const tintColorDark = "#fff";
 export const tintColorBackOpacity = "rgb(0,0,0,.5)";
+export const tintColorGray = "#333333";
 
 export const Colors = {
   light: {
@@ -15,6 +16,7 @@ export const Colors = {
     icon: "#687076",
     tabIconDefault: "#687076",
     tabIconSelected: tintColorLight,
+    textInputBgc: "#F3F3F3",
   },
   dark: {
     text: "#ECEDEE",

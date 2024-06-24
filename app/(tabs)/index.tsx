@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Path, Svg } from "react-native-svg";
 
 import { monthNumberToName } from "@/helpers/monthNumberToName";
@@ -9,6 +9,7 @@ import ScheduleDate from "@/components/ScheduleDate";
 import { getColorByStatus } from "@/helpers/getColorByStatus";
 import { tintColorDark } from "@/constants/Colors";
 import NoMaintenanceScheduled from "@/components/NoMaintenanceScheduled";
+import { Link, router } from "expo-router";
 
 export default function Calendar() {
   const [customerCalendarData, setCustomerCalendarData] = useState<ChallengeData>({} as ChallengeData);
@@ -23,13 +24,22 @@ export default function Calendar() {
     <SafeAreaView>
       <ScrollView style={styles.scrollView}>
         {customerCalendarData.calendar?.map((item) => (
-          <View style={styles.cardContainer}>
+          <View style={styles.cardContainer} key={item.month}>
             <Text style={styles.cardTitle} key={item.month}>
               {monthNumberToName(item.month)} {item.year}
             </Text>
             {item.actions.length > 0 ? (
               item.actions?.map((action) => (
-                <View style={styles.container} key={action.id}>
+                <Pressable
+                  style={styles.container}
+                  key={action.id}
+                  onPress={() => {
+                    router.push({
+                      pathname: "action/[action]",
+                      params: { action: JSON.stringify(action) as string },
+                    });
+                  }}
+                >
                   <View>
                     <ScheduleDate action={action} />
                   </View>
@@ -58,7 +68,7 @@ export default function Calendar() {
                       <Text style={[styles.text, styles.status]}>{action.status}</Text>
                     </View>
                   </View>
-                </View>
+                </Pressable>
               ))
             ) : (
               <NoMaintenanceScheduled />
@@ -101,6 +111,7 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     flex: 1,
     borderRadius: 4,
+    width: "100%",
   },
   scrollView: { padding: 16 },
   cardContainer: {
